@@ -14,7 +14,7 @@ export default function Home() {
           alt="Description of the image"
           width={600}
           height={300}
-          className="w-full md:w-auto object-none rounded-lg drop-shadow-lg"
+          className="w-full md:w-auto object-none rounded-lg drop-shadow-lg border-4 border-white"
         />
         <WorkoutForm />
       </div>
