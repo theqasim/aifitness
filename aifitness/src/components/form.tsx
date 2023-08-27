@@ -1,6 +1,10 @@
 import { useState } from "react";
+import Loadinganimation from "./loadinganimation";
+import Chatbot from "./chatbot";
 
-function Workoutform() {
+function WorkoutForm({ onFormSubmit }: { onFormSubmit: () => void }) {
+  const [loading, setLoading] = useState<boolean>(false);
+  const [showComponent, setShowComponent] = useState(false);
   const [formData, setFormData] = useState({
     gender: "male",
     fitnessGoals: "strength",
@@ -14,10 +18,18 @@ function Workoutform() {
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  const handleSubmit = (e: { preventDefault: () => void }) => {
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    console.log(formData);
+    setLoading(true);
+
+    // Simulating an async operation
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
+    setLoading(false);
+
+    onFormSubmit(); // Trigger the callback passed as a prop
   };
+
   return (
     <div className="flex flex-col items-center justify-center w-full lg:w-2/4 shadow-lg p-5 bg-white rounded-md font-mons">
       <div className="flex items-center justify-center w-4/4 mt-10">
@@ -109,6 +121,7 @@ function Workoutform() {
             </select>
           </div>
           <div className="flex items-center justify-center">
+            {loading && <Loadinganimation />}
             <button
               type="submit"
               className="relative inline-flex items-center px-12 py-3 overflow-hidden text-lg font-medium text-black border-2 border-black rounded-full hover:bg-black hover:text-white group bg-white"
@@ -135,7 +148,10 @@ function Workoutform() {
           </div>
         </form>
       </div>
+      {showComponent && <Chatbot />}{" "}
+      {/* Rendering Chatbot conditionally here */}
     </div>
   );
 }
-export default Workoutform;
+
+export default WorkoutForm;
