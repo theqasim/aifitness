@@ -23,17 +23,22 @@ export default function Home() {
   };
 
   return (
-    <main className="flex items-center justify-center min-h-screen p-24 bg-gradient-to-t from-violet-600 to-cyan-300">
-      <div className="flex flex-col md:flex-row items-center space-y-6 md:space-y-0 md:space-x-6">
-      <h1 className="text-xl font-medium">This is a test</h1>
-        <Image
-          src="/resources/avatar2.png"
-          alt="Description of the image"
-          width={600}
-          height={300}
-          className="w-full md:w-auto object-none rounded-lg"
-        />
-        <div className="flex flex-col items-center justify-center w-full lg:w-2/4 shadow-lg p-5 bg-white rounded-md font-mons">
+<main className="flex flex-col items-center justify-center min-h-screen p-24 bg-gradient-to-t from-violet-600 to-cyan-300">
+
+<div className="mb-12 text-center w-full">
+    <h1 className="text-4xl font-bold mb-4 font-mons text-stone-950">Start your fitness journey today!</h1>
+    <p className="text-xl text-stone-950">FitnessAI was built to remove the guesswork from working out, and to simply the process of starting. Within seconds you will be given a plan to help you reach your goals.</p>
+</div>
+
+<div className="flex flex-col md:flex-row items-center w-full space-y-6 md:space-y-0 md:space-x-6">
+    <Image
+        src="/resources/avatar2.png"
+        alt="Description of the image"
+        width={600}
+        height={300}
+        className="w-full md:w-auto object-none rounded-lg"
+    />
+    <div className="flex flex-col items-center justify-center w-full lg:w-2/4 shadow-lg p-5 bg-white rounded-md font-mons">
           <div className="flex items-center justify-center w-4/4 mt-10">
             <form onSubmit={handleSubmit} className="w-full max-w-md">
               <div className="mb-4">
