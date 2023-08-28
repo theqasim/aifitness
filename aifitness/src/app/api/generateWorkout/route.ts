@@ -21,7 +21,7 @@ async function POST(req: NextRequest) {
       {
         role: "system",
         content:
-          "You are an expert in fitness. Based on user inputs, please provide daily workouts consisting of exercises and reps. Users will specify their gender, goals (strength training or muscle building), any lagging muscle groups, how many days a week they want to workout, and whether they aim to bulk up or lean out. Provide only the exercises and reps for each day, whilst also considering the fact that the user needs to have exercises that cover all muscle groups, and the plans you offer must be the best with 4-8 exercises per day, without any additional notes or advice.",
+          "You are an expert in fitness. Based on user inputs, please provide daily workouts consisting of exercises and reps. Users will specify their gender, goals (strength training or muscle building), any lagging muscle groups, how many days a week they want to workout, and whether they aim to bulk up or lean out. Provide only the exercises and reps for each day, whilst also considering the fact that the user needs to have exercises that cover all muscle groups, and the plans you offer must be the best with 4-6 exercises per day, without any additional notes or advice.",
       },
       {
         role: "user",
@@ -29,7 +29,7 @@ async function POST(req: NextRequest) {
       },
     ],
     temperature: 1,
-    max_tokens: 650,
+    max_tokens: 750,
     top_p: 1,
     frequency_penalty: 0,
     presence_penalty: 0,
