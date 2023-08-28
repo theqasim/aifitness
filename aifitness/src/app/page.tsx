@@ -27,7 +27,7 @@ export default function Home() {
         <WorkoutForm onFormSubmit={handleFormSubmission} />{" "}
         {/* Passing the callback here */}
       </div>
-      {showChatbot && <Chatbot />} {/* Displaying Chatbot based on state */}
+      {showChatbot && <Chatbot />}
     </main>
   );
 }

@@ -4,7 +4,9 @@ import Chatbot from "./chatbot";
 
 function WorkoutForm({ onFormSubmit }: { onFormSubmit: () => void }) {
   const [loading, setLoading] = useState<boolean>(false);
-  const [showComponent, setShowComponent] = useState(false);
+  const [firstChatbotMessage, setFirstChatbotMessage] = useState<string | null>(
+    null
+  );
   const [formData, setFormData] = useState({
     gender: "male",
     fitnessGoals: "strength",
@@ -14,17 +16,17 @@ function WorkoutForm({ onFormSubmit }: { onFormSubmit: () => void }) {
   });
 
   const isFormValid = (): boolean => {
-    const { gender, fitnessGoals, laggingMuscles, workoutDays, weightgoal } = formData;
+    const { gender, fitnessGoals, laggingMuscles, workoutDays, weightgoal } =
+      formData;
 
-    // Checking each field explicitly
-    return !!gender &&
-           !!fitnessGoals &&
-           !!laggingMuscles &&
-           !!workoutDays &&
-           !!weightgoal
-};
-
-
+    return (
+      !!gender &&
+      !!fitnessGoals &&
+      !!laggingMuscles &&
+      !!workoutDays &&
+      !!weightgoal
+    );
+  };
 
   const handleChange = (e: { target: { name: any; value: any } }) => {
     const { name, value } = e.target;
@@ -35,19 +37,31 @@ function WorkoutForm({ onFormSubmit }: { onFormSubmit: () => void }) {
     e.preventDefault();
 
     if (!isFormValid()) {
-      alert('Please fill in all fields before submitting.');
-      return; // Exit out of the function if the form is not valid
+      alert("Please fill in all fields before submitting.");
+      return;
     }
 
     setLoading(true);
 
-    // Simulating an async operation
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    try {
+      const response = await fetch("http://localhost:3000/api/generateWorkout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
-    setLoading(false);
-    setShowComponent(true); // Assuming you want to show the chatbot after form submission
-
-    onFormSubmit(); // Trigger the callback passed as a prop
+      const responseData = await response.json();
+      setFirstChatbotMessage(responseData.choices[0].message.content); // assuming the data has a "data" field, adjust if different
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      alert(
+        "There was an error generating your workout plan. Please try again."
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -146,28 +160,13 @@ function WorkoutForm({ onFormSubmit }: { onFormSubmit: () => void }) {
               type="submit"
               className="relative inline-flex items-center px-12 py-3 overflow-hidden text-lg font-medium text-black border-2 border-black rounded-full hover:bg-black hover:text-white group bg-white"
             >
-              <span className="absolute left-0 block w-full h-0 transition-all bg-black opacity-100 group-hover:h-full top-1/2 group-hover:top-0 duration-400 ease"></span>
-              <span className="absolute right-0 flex items-center justify-start w-10 h-10 duration-300 transform translate-x-full group-hover:translate-x-0 ease">
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M14 5l7 7m0 0l-7 7m7-7H3"
-                  ></path>
-                </svg>
-              </span>
               <span className="relative">Generate Workout Plan</span>
             </button>
           </div>
         </form>
       </div>
+
+      {firstChatbotMessage && <Chatbot initialMessage={firstChatbotMessage} />}
     </div>
   );
 }

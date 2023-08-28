@@ -1,26 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
-function Chatbot() {
-  const [messages, setMessages] = useState([
+function Chatbot({ initialMessage }: { initialMessage?: string }) {
+  const defaultMessages = [
     {
-      sender: 'Coach',
-      text: 'Hello! How can I assist you with your workout plan today?'
+      sender: "Coach",
+      text: "Hello! How can I assist you with your workout plan today?",
     },
     {
-      sender: 'You',
-      text: "I'm looking for a strength training routine."
-    }
-  ]);
-  const [inputValue, setInputValue] = useState('');
+      sender: "You",
+      text: "I'm looking for a strength training routine.",
+    },
+  ];
 
-  const handleInputChange = (e: { target: { value: React.SetStateAction<string>; }; }) => {
+  // Conditionally insert the initialMessage into default messages
+  if (initialMessage) {
+    defaultMessages.unshift({
+      sender: "Coach",
+      text: initialMessage,
+    });
+  }
+
+  const [messages, setMessages] = useState(defaultMessages);
+  const [inputValue, setInputValue] = useState("");
+
+  const handleInputChange = (e: {
+    target: { value: React.SetStateAction<string> };
+  }) => {
     setInputValue(e.target.value);
   };
 
   const handleSendClick = () => {
     if (inputValue.trim()) {
-      setMessages([...messages, { sender: 'You', text: inputValue.trim() }]);
-      setInputValue(''); // clear the input
+      setMessages([...messages, { sender: "You", text: inputValue.trim() }]);
+      setInputValue(""); // clear the input
     }
   };
 
@@ -34,14 +46,25 @@ function Chatbot() {
       <div className="p-4 h-96 overflow-y-auto">
         {messages.map((message, index) => (
           <div key={index} className="mb-4">
-          <div className={message.sender === 'You' ? 'text-blue-600 mb-2' : 'text-green-600 mb-2'}>
+            <div
+              className={
+                message.sender === "You"
+                  ? "text-blue-600 mb-2"
+                  : "text-green-600 mb-2"
+              }
+            >
               {message.sender}
-          </div>
-          <div className={message.sender === 'You' ? 'bg-blue-100 p-2 rounded-md' : 'bg-green-100 p-2 rounded-md'}>
+            </div>
+            <div
+              className={
+                message.sender === "You"
+                  ? "bg-blue-100 p-2 rounded-md"
+                  : "bg-green-100 p-2 rounded-md"
+              }
+            >
               <p>{message.text}</p>
+            </div>
           </div>
-      </div>
-
         ))}
       </div>
 
@@ -55,7 +78,10 @@ function Chatbot() {
           className="w-full p-2 rounded-md border focus:outline-none focus:border-blue-500 resize-y"
         ></textarea>
 
-        <button onClick={handleSendClick} className="mt-2 bg-blue-500 text-white p-2 rounded-md">
+        <button
+          onClick={handleSendClick}
+          className="mt-2 bg-blue-500 text-white p-2 rounded-md"
+        >
           Send
         </button>
       </div>
