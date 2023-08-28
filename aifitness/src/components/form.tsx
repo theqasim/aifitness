@@ -13,6 +13,19 @@ function WorkoutForm({ onFormSubmit }: { onFormSubmit: () => void }) {
     weightgoal: "weightgoal",
   });
 
+  const isFormValid = (): boolean => {
+    const { gender, fitnessGoals, laggingMuscles, workoutDays, weightgoal } = formData;
+
+    // Checking each field explicitly
+    return !!gender &&
+           !!fitnessGoals &&
+           !!laggingMuscles &&
+           !!workoutDays &&
+           !!weightgoal
+};
+
+
+
   const handleChange = (e: { target: { name: any; value: any } }) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
@@ -20,12 +33,19 @@ function WorkoutForm({ onFormSubmit }: { onFormSubmit: () => void }) {
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
+
+    if (!isFormValid()) {
+      alert('Please fill in all fields before submitting.');
+      return; // Exit out of the function if the form is not valid
+    }
+
     setLoading(true);
 
     // Simulating an async operation
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
     setLoading(false);
+    setShowComponent(true); // Assuming you want to show the chatbot after form submission
 
     onFormSubmit(); // Trigger the callback passed as a prop
   };
@@ -148,8 +168,6 @@ function WorkoutForm({ onFormSubmit }: { onFormSubmit: () => void }) {
           </div>
         </form>
       </div>
-      {showComponent && <Chatbot />}{" "}
-      {/* Rendering Chatbot conditionally here */}
     </div>
   );
 }
