@@ -4,8 +4,12 @@ function Chatbot({ initialMessage }: { initialMessage?: string }) {
   const defaultMessages = [
     {
       sender: "Coach",
-      text: "Hello! Here is your personalized workout plan, let me know if you have any questions! ",
-    }
+      text: "Hello! How can I assist you with your workout plan today?",
+    },
+    {
+      sender: "You",
+      text: "I'm looking for a strength training routine.",
+    },
   ];
 
   // Conditionally insert the initialMessage into default messages

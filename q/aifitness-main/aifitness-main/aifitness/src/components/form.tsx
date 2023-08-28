@@ -2,12 +2,7 @@ import { useState } from "react";
 import Loadinganimation from "./loadinganimation";
 import Chatbot from "./chatbot";
 
-interface WorkoutFormProps {
-  onFormSubmit: (message: string) => void;
-}
-
-function WorkoutForm({ onFormSubmit }: WorkoutFormProps) {
-  const [showChatbot, setShowChatbot] = useState(false);
+function WorkoutForm({ onFormSubmit }: { onFormSubmit: () => void }) {
   const [loading, setLoading] = useState<boolean>(false);
   const [firstChatbotMessage, setFirstChatbotMessage] = useState<string | null>(
     null
@@ -38,10 +33,15 @@ function WorkoutForm({ onFormSubmit }: WorkoutFormProps) {
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
-    setLoading(true);  // Set loading state to true here
+    if (!isFormValid()) {
+      alert("Please fill in all fields before submitting.");
+      return;
+    }
+
+    setLoading(true);
 
     try {
       const response = await fetch("http://localhost:3000/api/generateWorkout", {
@@ -53,24 +53,16 @@ function WorkoutForm({ onFormSubmit }: WorkoutFormProps) {
       });
 
       const responseData = await response.json();
-      const fetchedMessage = responseData.choices[0].message.content;
-
-      onFormSubmit(fetchedMessage);  // <-- This sends the message up to the parent component
-      setFirstChatbotMessage(fetchedMessage);
-      onFormSubmit(fetchedMessage); // Pass the fetched message up
-      setShowChatbot(true); // This will show the chatbot component when form is submitted
-
+      setFirstChatbotMessage(responseData.choices[0].message.content); // assuming the data has a "data" field, adjust if different
     } catch (error) {
       console.error("Error fetching data:", error);
       alert(
         "There was an error generating your workout plan. Please try again."
       );
     } finally {
-      setLoading(false);  // Set loading state to false regardless of success or error
+      setLoading(false);
     }
-};
-
-
+  };
 
   return (
     <div className="flex flex-col items-center justify-center w-full lg:w-2/4 shadow-lg p-5 bg-white rounded-md font-mons">
@@ -163,35 +155,18 @@ function WorkoutForm({ onFormSubmit }: WorkoutFormProps) {
             </select>
           </div>
           <div className="flex items-center justify-center">
-              {loading && <Loadinganimation />}
-              <button
+            {loading && <Loadinganimation />}
+            <button
               type="submit"
               className="relative inline-flex items-center px-12 py-3 overflow-hidden text-lg font-medium text-black border-2 border-black rounded-full hover:bg-black hover:text-white group bg-white"
             >
-              <span className="absolute left-0 block w-full h-0 transition-all bg-black opacity-100 group-hover:h-full top-1/2 group-hover:top-0 duration-400 ease"></span>
-              <span className="absolute right-0 flex items-center justify-start w-10 h-10 duration-300 transform translate-x-full group-hover:translate-x-0 ease">
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M14 5l7 7m0 0l-7 7m7-7H3"
-                  ></path>
-                </svg>
-              </span>
               <span className="relative">Generate Workout Plan</span>
             </button>
-            </div>
+          </div>
         </form>
       </div>
 
-      {/* {firstChatbotMessage && <Chatbot initialMessage={firstChatbotMessage} />} */}
+      {firstChatbotMessage && <Chatbot initialMessage={firstChatbotMessage} />}
     </div>
   );
 }

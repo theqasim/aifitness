@@ -5,13 +5,12 @@ import TopSection from "@/components/topsection";
 import WorkoutForm from "@/components/form";
 import { useState } from "react";
 import Chatbot from "../components/chatbot";
-import WorkoutWithChatbot from "@/components/workoutwithchatbot";
 
 export default function Home() {
-  const [chatbotMessage, setChatbotMessage] = useState<string | null>(null);
+  const [showChatbot, setShowChatbot] = useState(false); // state to control the display of Chatbot
 
-  const handleFormSubmission = (message: string) => {
-    setChatbotMessage(message);  // <-- This sets the chatbotMessage state with the received message
+  const handleFormSubmission = () => {
+    setShowChatbot(true); // Set the state to display the Chatbot when form is submitted
   };
 
   return (
@@ -25,9 +24,10 @@ export default function Home() {
           height={300}
           className="w-full md:w-auto object-none rounded-lg drop-shadow-lg border-4 border-white"
         />
-        <WorkoutForm onFormSubmit={handleFormSubmission} />
+        <WorkoutForm onFormSubmit={handleFormSubmission} />{" "}
+        {/* Passing the callback here */}
       </div>
-      {chatbotMessage && <Chatbot initialMessage={chatbotMessage} />}
+      {showChatbot && <Chatbot />}
     </main>
   );
-  }
+}
