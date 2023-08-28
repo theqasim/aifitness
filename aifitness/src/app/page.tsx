@@ -11,7 +11,7 @@ export default function Home() {
   const [chatbotMessage, setChatbotMessage] = useState<string | null>(null);
 
   const handleFormSubmission = (message: string) => {
-    setChatbotMessage(message);  // <-- This sets the chatbotMessage state with the received message
+    setChatbotMessage(message); // <-- This sets the chatbotMessage state with the received message
   };
 
   return (
@@ -30,4 +30,4 @@ export default function Home() {
       {chatbotMessage && <Chatbot initialMessage={chatbotMessage} />}
     </main>
   );
-  }
+}

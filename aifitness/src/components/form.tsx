@@ -41,36 +41,36 @@ function WorkoutForm({ onFormSubmit }: WorkoutFormProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    setLoading(true);  // Set loading state to true here
+    setLoading(true); // Set loading state to true here
 
     try {
-      const response = await fetch("http://localhost:3000/api/generateWorkout", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        "http://localhost:3000/api/generateWorkout",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
 
       const responseData = await response.json();
       const fetchedMessage = responseData.choices[0].message.content;
 
-      onFormSubmit(fetchedMessage);  // <-- This sends the message up to the parent component
+      onFormSubmit(fetchedMessage); // <-- This sends the message up to the parent component
       setFirstChatbotMessage(fetchedMessage);
       onFormSubmit(fetchedMessage); // Pass the fetched message up
       setShowChatbot(true); // This will show the chatbot component when form is submitted
-
     } catch (error) {
       console.error("Error fetching data:", error);
       alert(
         "There was an error generating your workout plan. Please try again."
       );
     } finally {
-      setLoading(false);  // Set loading state to false regardless of success or error
+      setLoading(false); // Set loading state to false regardless of success or error
     }
-};
-
-
+  };
 
   return (
     <div className="flex flex-col items-center justify-center w-full lg:w-2/4 shadow-lg p-5 bg-white rounded-md font-mons">
@@ -163,8 +163,8 @@ function WorkoutForm({ onFormSubmit }: WorkoutFormProps) {
             </select>
           </div>
           <div className="flex items-center justify-center">
-              {loading && <Loadinganimation />}
-              <button
+            {loading && <Loadinganimation />}
+            <button
               type="submit"
               className="relative inline-flex items-center px-12 py-3 overflow-hidden text-lg font-medium text-black border-2 border-black rounded-full hover:bg-black hover:text-white group bg-white"
             >
@@ -187,7 +187,7 @@ function WorkoutForm({ onFormSubmit }: WorkoutFormProps) {
               </span>
               <span className="relative">Generate Workout Plan</span>
             </button>
-            </div>
+          </div>
         </form>
       </div>
 
