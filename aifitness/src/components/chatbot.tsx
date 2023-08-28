@@ -34,13 +34,14 @@ function Chatbot() {
       <div className="p-4 h-96 overflow-y-auto">
         {messages.map((message, index) => (
           <div key={index} className="mb-4">
-            <div className={`text-${message.sender === 'You' ? 'blue-600' : 'green-600'} mb-2`}>
+          <div className={message.sender === 'You' ? 'text-blue-600 mb-2' : 'text-green-600 mb-2'}>
               {message.sender}
-            </div>
-            <div className={`bg-${message.sender === 'You' ? 'blue-100' : 'green-100'} p-2 rounded-md`}>
-              <p>{message.text}</p>
-            </div>
           </div>
+          <div className={message.sender === 'You' ? 'bg-blue-100 p-2 rounded-md' : 'bg-green-100 p-2 rounded-md'}>
+              <p>{message.text}</p>
+          </div>
+      </div>
+
         ))}
       </div>
 
