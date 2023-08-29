@@ -33,7 +33,7 @@ function Chatbot({ initialMessage }: { initialMessage?: string }) {
   };
 
   return (
-<div className="mt-20 w-full lg:w-2/4 bg-white rounded-md shadow-lg font-mons">
+    <div className="mt-20 w-full lg:w-2/4 bg-white rounded-md shadow-lg font-mons">
       <div className="p-4 border-b">
         <h2 className="text-xl font-bold">FitnessAI Coach</h2>
       </div>

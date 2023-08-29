@@ -2,13 +2,9 @@ import { useState } from "react";
 import Loadinganimation from "./loadinganimation";
 import Chatbot from "./chatbot";
 
-
-
 interface WorkoutFormProps {
   onFormSubmit: (message: string | JSX.Element[]) => void;
 }
-
-
 
 interface Exercise {
   name: string;
@@ -19,8 +15,6 @@ interface Day {
   day: string;
   exercises: Exercise[];
 }
-
-
 
 function formatWorkoutMessage(workoutJson: string): JSX.Element[] {
   const workoutData = JSON.parse(workoutJson);
@@ -37,18 +31,23 @@ function formatWorkoutMessage(workoutJson: string): JSX.Element[] {
     const day: string = workoutDay.day;
     const exercises: Exercise[] = workoutDay.exercises;
 
-    if (exercises) {  // Check if exercises array exists
-      const formattedExercises: string = exercises.map((exercise: Exercise) => {
-        return `${exercise.name} - ${exercise.reps}`;
-      }).join("\n");
+    if (exercises) {
+      // Check if exercises array exists
+      const formattedExercises: string = exercises
+        .map((exercise: Exercise) => {
+          return `${exercise.name} - ${exercise.reps}`;
+        })
+        .join("\n");
 
       formattedMessage.push(
         <div className="mt-2" key={day}>
           <h3>{`${day}:`}</h3>
           <ul>
-            {formattedExercises.split("\n").map((item: string, index: number) => (
-              <li key={index}>{item}</li>
-            ))}
+            {formattedExercises
+              .split("\n")
+              .map((item: string, index: number) => (
+                <li key={index}>{item}</li>
+              ))}
           </ul>
         </div>
       );
@@ -60,13 +59,15 @@ function formatWorkoutMessage(workoutJson: string): JSX.Element[] {
   return formattedMessage;
 }
 
-
-
 function WorkoutForm({ onFormSubmit }: WorkoutFormProps) {
   const [showChatbot, setShowChatbot] = useState(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const [firstChatbotMessage, setFirstChatbotMessage] = useState<string | JSX.Element[] | null>(null);
-  const [formattedChatbotMessage, setFormattedChatbotMessage] = useState<JSX.Element[] | null>(null);
+  const [firstChatbotMessage, setFirstChatbotMessage] = useState<
+    string | JSX.Element[] | null
+  >(null);
+  const [formattedChatbotMessage, setFormattedChatbotMessage] = useState<
+    JSX.Element[] | null
+  >(null);
   const [formData, setFormData] = useState({
     gender: "male",
     fitnessGoals: "strength",
@@ -74,7 +75,6 @@ function WorkoutForm({ onFormSubmit }: WorkoutFormProps) {
     workoutDays: "",
     weightgoal: "weightgoal",
   });
-
 
   const isFormValid = (): boolean => {
     const { gender, fitnessGoals, laggingMuscles, workoutDays, weightgoal } =
@@ -99,22 +99,18 @@ function WorkoutForm({ onFormSubmit }: WorkoutFormProps) {
     setLoading(true); // Set loading state to true here
 
     try {
-      const response = await fetch(
-        "/api/generateWorkout",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
-      );
+      const response = await fetch("/api/generateWorkout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
       const responseData = await response.json();
 
       const fetchedMessage = responseData.choices[0].message.content;
       const formattedMessage = formatWorkoutMessage(fetchedMessage);
-
 
       if (formattedMessage) {
         setFirstChatbotMessage(formattedMessage);
@@ -122,10 +118,8 @@ function WorkoutForm({ onFormSubmit }: WorkoutFormProps) {
       } else {
         // Handle the case where formattedMessage is null.
         // Maybe set an error state or call onFormSubmit with a default value.
-        onFormSubmit('No formatted message available.');
+        onFormSubmit("No formatted message available.");
       }
-
-
 
       setShowChatbot(true); // This will show the chatbot component when form is submitted
     } catch (error) {
