@@ -20,7 +20,7 @@ export default function Home() {
       <TopSection />
       <div className="flex flex-col lg:flex-row items-center w-full space-y-6 lg:space-y-0 lg:space-x-6">
         <Image
-          src="/resources/avatar2.png"
+          src="/resources/avatar5.png"
           alt="Description of the image"
           width={600}
           height={300}
