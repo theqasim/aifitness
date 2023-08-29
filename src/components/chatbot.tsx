@@ -64,23 +64,23 @@ function Chatbot({ initialMessage }: { initialMessage?: string }) {
         ))}
       </div>
 
-      {/* Chat input area */}
-      <div className="p-4 border-t">
-        <textarea
-          rows={2}
-          value={inputValue}
-          onChange={handleInputChange}
-          placeholder="Type your message..."
-          className="w-full p-2 rounded-md border focus:outline-none focus:border-blue-500 resize-y"
-        ></textarea>
+  {/* Chat input area */}
+  <div className="p-4 border-t flex items-center">
+    <textarea
+      rows={2}
+      value={inputValue}
+      onChange={handleInputChange}
+      placeholder="Type your message..."
+      className="flex-grow p-2 rounded-md border focus:outline-none focus:border-blue-500 resize-y"
+    ></textarea>
+    <button
+      onClick={handleSendClick}
+      className="ml-4 bg-black text-white p-2 rounded-md"
+    >
+      Send
+    </button>
+  </div>
 
-        <button
-          onClick={handleSendClick}
-          className="mt-2 bg-blue-500 text-white p-2 rounded-md"
-        >
-          Send
-        </button>
-      </div>
     </div>
   );
 }
