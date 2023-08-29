@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 function Chatbot({ initialMessage }: { initialMessage?: string }) {
+  const chatRef = useRef<HTMLDivElement>(null);
+
   const defaultMessages = [
     {
       sender: "Coach",
@@ -8,7 +10,6 @@ function Chatbot({ initialMessage }: { initialMessage?: string }) {
     },
   ];
 
-  // Conditionally insert the initialMessage into default messages
   if (initialMessage) {
     defaultMessages.unshift({
       sender: "Coach",
@@ -19,6 +20,12 @@ function Chatbot({ initialMessage }: { initialMessage?: string }) {
   const [messages, setMessages] = useState(defaultMessages);
   const [inputValue, setInputValue] = useState("");
 
+  useEffect(() => {
+    if (chatRef.current) {
+      chatRef.current.scrollTop = chatRef.current.scrollHeight;
+    }
+  }, [messages]);
+
   const handleInputChange = (e: {
     target: { value: React.SetStateAction<string> };
   }) => {
@@ -28,9 +35,14 @@ function Chatbot({ initialMessage }: { initialMessage?: string }) {
   const handleSendClick = () => {
     if (inputValue.trim()) {
       setMessages([...messages, { sender: "You", text: inputValue.trim() }]);
-      setInputValue(""); // clear the input
+      setInputValue("");
     }
   };
+  useEffect(() => {
+    if (chatRef.current) {
+      chatRef.current.scrollTop = chatRef.current.scrollHeight;
+    }
+  }, [messages]);
 
   return (
     <div className="mt-20 w-full lg:w-2/4 bg-white rounded-md shadow-lg font-mons">
@@ -38,8 +50,7 @@ function Chatbot({ initialMessage }: { initialMessage?: string }) {
         <h2 className="text-xl font-bold">FitnessAI Coach</h2>
       </div>
 
-      {/* Chat display area */}
-      <div className="p-4 h-96 overflow-y-auto">
+      <div ref={chatRef} className="p-4 h-96 overflow-y-auto">
         {messages.map((message, index) => (
           <div key={index} className="mb-4">
             <div
@@ -64,23 +75,21 @@ function Chatbot({ initialMessage }: { initialMessage?: string }) {
         ))}
       </div>
 
-  {/* Chat input area */}
-  <div className="p-4 border-t flex items-center">
-    <textarea
-      rows={2}
-      value={inputValue}
-      onChange={handleInputChange}
-      placeholder="Type your message..."
-      className="flex-grow p-2 rounded-md border focus:outline-none focus:border-blue-500 resize-y"
-    ></textarea>
-    <button
-      onClick={handleSendClick}
-      className="ml-4 bg-black text-white p-2 rounded-md"
-    >
-      Send
-    </button>
-  </div>
-
+      <div className="p-4 border-t flex items-center">
+        <textarea
+          rows={2}
+          value={inputValue}
+          onChange={handleInputChange}
+          placeholder="Type your message..."
+          className="flex-grow p-2 rounded-md border focus:outline-none focus:border-blue-500 resize-y"
+        ></textarea>
+        <button
+          onClick={handleSendClick}
+          className="ml-4 bg-black text-white p-2 rounded-md"
+        >
+          Send
+        </button>
+      </div>
     </div>
   );
 }
