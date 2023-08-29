@@ -20,6 +20,12 @@ function Chatbot({ initialMessage }: { initialMessage?: string }) {
   const [messages, setMessages] = useState(defaultMessages);
   const [inputValue, setInputValue] = useState("");
 
+  const copyToClipboard = (element: HTMLDivElement) => {
+    const textToCopy = element.innerText; // Gets all text within the div
+    navigator.clipboard.writeText(textToCopy);
+  };
+
+
   useEffect(() => {
     if (chatRef.current) {
       chatRef.current.scrollTop = chatRef.current.scrollHeight;
@@ -38,11 +44,6 @@ function Chatbot({ initialMessage }: { initialMessage?: string }) {
       setInputValue("");
     }
   };
-  useEffect(() => {
-    if (chatRef.current) {
-      chatRef.current.scrollTop = chatRef.current.scrollHeight;
-    }
-  }, [messages]);
 
   return (
     <div className="mt-20 w-full lg:w-2/4 bg-white rounded-md shadow-lg font-mons">
@@ -52,7 +53,7 @@ function Chatbot({ initialMessage }: { initialMessage?: string }) {
 
       <div ref={chatRef} className="p-4 h-96 overflow-y-auto">
         {messages.map((message, index) => (
-          <div key={index} className="mb-4">
+          <div key={index} className="mb-4 relative">
             <div
               className={
                 message.sender === "You"
@@ -68,8 +69,18 @@ function Chatbot({ initialMessage }: { initialMessage?: string }) {
                   ? "bg-blue-100 p-2 rounded-md"
                   : "bg-green-100 p-2 rounded-md"
               }
+              data-clipboard-text={message.text}
             >
-              <p>{message.text}</p>
+              <p className="w-11/12">{message.text}</p>
+              {message.sender === "Coach" && (
+                  <span
+                    className="absolute mt-10 mr-2 top-0 right-0 cursor-pointer"
+                    onClick={(e) => copyToClipboard(e.currentTarget.parentElement! as HTMLDivElement)}
+                  >
+                    <img className="hover:drop-shadow " src="/resources/clipboardicon.png" alt="Copy to Clipboard"></img>
+                  </span>
+                )}
+
             </div>
           </div>
         ))}
