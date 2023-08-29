@@ -2,16 +2,67 @@ import { useState } from "react";
 import Loadinganimation from "./loadinganimation";
 import Chatbot from "./chatbot";
 
+
+
 interface WorkoutFormProps {
-  onFormSubmit: (message: string) => void;
+  onFormSubmit: (message: string | JSX.Element[]) => void;
 }
+
+interface Exercise {
+  name: string;
+  reps: string;
+}
+
+interface Day {
+  day: string;
+  exercises: Exercise[];
+}
+
+function formatWorkoutMessage(workoutJson: string): JSX.Element[] {
+  const workoutData = JSON.parse(workoutJson);
+  console.log("Workout Data: ", workoutData); // Debugging line
+
+  const formattedMessage: JSX.Element[] = [];
+
+  // Check if the keys exist in the parsed JSON
+  const keys = Object.keys(workoutData);
+  console.log("Keys: ", keys); // Debugging line
+
+  keys.forEach((workoutDayKey) => {
+    const workoutDay: Day = workoutData[workoutDayKey];
+    const day: string = workoutDay.day;
+    const exercises: Exercise[] = workoutDay.exercises;
+
+    if (exercises) {  // Check if exercises array exists
+      const formattedExercises: string = exercises.map((exercise: Exercise) => {
+        return `${exercise.name} - ${exercise.reps}`;
+      }).join("\n");
+
+      formattedMessage.push(
+        <div className="mt-2" key={day}>
+          <h3>{`${day}:`}</h3>
+          <ul>
+            {formattedExercises.split("\n").map((item: string, index: number) => (
+              <li key={index}>{item}</li>
+            ))}
+          </ul>
+        </div>
+      );
+    } else {
+      console.warn(`No exercises found for ${day}`);
+    }
+  });
+
+  return formattedMessage;
+}
+
+
 
 function WorkoutForm({ onFormSubmit }: WorkoutFormProps) {
   const [showChatbot, setShowChatbot] = useState(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const [firstChatbotMessage, setFirstChatbotMessage] = useState<string | null>(
-    null
-  );
+  const [firstChatbotMessage, setFirstChatbotMessage] = useState<string | JSX.Element[] | null>(null);
+  const [formattedChatbotMessage, setFormattedChatbotMessage] = useState<JSX.Element[] | null>(null);
   const [formData, setFormData] = useState({
     gender: "male",
     fitnessGoals: "strength",
@@ -19,6 +70,7 @@ function WorkoutForm({ onFormSubmit }: WorkoutFormProps) {
     workoutDays: "",
     weightgoal: "weightgoal",
   });
+
 
   const isFormValid = (): boolean => {
     const { gender, fitnessGoals, laggingMuscles, workoutDays, weightgoal } =
@@ -45,7 +97,7 @@ function WorkoutForm({ onFormSubmit }: WorkoutFormProps) {
 
     try {
       const response = await fetch(
-        "http://localhost:3000/api/generateWorkout",
+        "/api/generateWorkout",
         {
           method: "POST",
           headers: {
@@ -56,11 +108,26 @@ function WorkoutForm({ onFormSubmit }: WorkoutFormProps) {
       );
 
       const responseData = await response.json();
-      const fetchedMessage = responseData.choices[0].message.content;
 
-      onFormSubmit(fetchedMessage); // <-- This sends the message up to the parent component
-      setFirstChatbotMessage(fetchedMessage);
-      onFormSubmit(fetchedMessage); // Pass the fetched message up
+      const fetchedMessage = responseData.choices[0].message.content;
+      console.log(fetchedMessage);
+      const formattedMessage = formatWorkoutMessage(fetchedMessage);
+
+      setFirstChatbotMessage(formattedMessage);
+       onFormSubmit(formattedMessage); // Pass the formatted message up
+
+
+      // if (formattedMessage) {
+      //   setFirstChatbotMessage(formattedMessage);
+      //   onFormSubmit(formattedMessage); // Pass the formatted message up
+      // } else {
+      //   // Handle the case where formattedMessage is null.
+      //   // Maybe set an error state or call onFormSubmit with a default value.
+      //   onFormSubmit('No formatted message available.');
+      // }
+
+
+
       setShowChatbot(true); // This will show the chatbot component when form is submitted
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -190,8 +257,6 @@ function WorkoutForm({ onFormSubmit }: WorkoutFormProps) {
           </div>
         </form>
       </div>
-
-      {/* {firstChatbotMessage && <Chatbot initialMessage={firstChatbotMessage} />} */}
     </div>
   );
 }
