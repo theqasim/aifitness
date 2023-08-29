@@ -8,6 +8,8 @@ interface WorkoutFormProps {
   onFormSubmit: (message: string | JSX.Element[]) => void;
 }
 
+
+
 interface Exercise {
   name: string;
   reps: string;
@@ -17,6 +19,8 @@ interface Day {
   day: string;
   exercises: Exercise[];
 }
+
+
 
 function formatWorkoutMessage(workoutJson: string): JSX.Element[] {
   const workoutData = JSON.parse(workoutJson);
@@ -92,7 +96,6 @@ function WorkoutForm({ onFormSubmit }: WorkoutFormProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     setLoading(true); // Set loading state to true here
 
     try {
@@ -110,21 +113,17 @@ function WorkoutForm({ onFormSubmit }: WorkoutFormProps) {
       const responseData = await response.json();
 
       const fetchedMessage = responseData.choices[0].message.content;
-      console.log(fetchedMessage);
       const formattedMessage = formatWorkoutMessage(fetchedMessage);
 
-      setFirstChatbotMessage(formattedMessage);
-       onFormSubmit(formattedMessage); // Pass the formatted message up
 
-
-      // if (formattedMessage) {
-      //   setFirstChatbotMessage(formattedMessage);
-      //   onFormSubmit(formattedMessage); // Pass the formatted message up
-      // } else {
-      //   // Handle the case where formattedMessage is null.
-      //   // Maybe set an error state or call onFormSubmit with a default value.
-      //   onFormSubmit('No formatted message available.');
-      // }
+      if (formattedMessage) {
+        setFirstChatbotMessage(formattedMessage);
+        onFormSubmit(formattedMessage); // Pass the formatted message up
+      } else {
+        // Handle the case where formattedMessage is null.
+        // Maybe set an error state or call onFormSubmit with a default value.
+        onFormSubmit('No formatted message available.');
+      }
 
 
 

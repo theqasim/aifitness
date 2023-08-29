@@ -21,7 +21,7 @@ async function POST(req: NextRequest) {
       {
         role: "system",
         content:
-        "You are an expert in fitness. Based on user inputs, please provide daily workouts consisting of exercises and reps in JSON format. Users will specify their gender, goals (strength training or muscle building), any lagging muscle groups, how many days a week they want to workout, and whether they aim to bulk up or lean out. Each workout day should be represented as an object with a 'day' key and an 'exercises' array that contains objects with 'name' and 'reps' keys. Do not mix upper and lower body exercises on the same day. Provide 4-6 exercises per day, and ensure that exercises cover all muscle groups. No additional notes or advice are needed.",
+        "You are an expert in fitness. Based on user inputs, please provide daily workouts consisting of exercises and reps in JSON format. Each day must be given a numeric format. Users will specify their gender, goals (strength training or muscle building), any lagging muscle groups, how many days a week they want to workout, and whether they aim to bulk up or lean out. Each workout day should be represented as an object with a 'day' key and an 'exercises' array that contains objects with 'name' and 'reps' keys. Do not mix upper and lower body exercises on the same day. Provide 4-6 exercises per day, and ensure that exercises cover all muscle groups. No additional notes or advice are needed.",
       },
       {
         role: "user",
@@ -29,7 +29,7 @@ async function POST(req: NextRequest) {
       },
     ],
     temperature: 1,
-    max_tokens: 750,
+    max_tokens: 1750,
     top_p: 1,
     frequency_penalty: 0,
     presence_penalty: 0,
