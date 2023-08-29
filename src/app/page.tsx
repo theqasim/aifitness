@@ -1,6 +1,6 @@
 // Home.tsx
 "use client";
-import Head from 'next/head';  // <-- Import here
+
 import Image from "next/image";
 import TopSection from "@/components/topsection";
 import WorkoutForm from "@/components/form";
@@ -16,10 +16,6 @@ export default function Home() {
   };
 
   return (
-    <>
-      <Head>
-        <link rel="icon" href="/resources/faviconnnnnn.ico" />  {/* <-- Add favicon here */}
-      </Head>
       <main className="flex flex-col items-center justify-center min-h-screen p-24 bg-bggrey">
         <TopSection />
         <div className="flex flex-col lg:flex-row items-center w-full space-y-6 lg:space-y-0 lg:space-x-6">
@@ -34,6 +30,5 @@ export default function Home() {
         </div>
         {chatbotMessage && <Chatbot initialMessage={chatbotMessage} />}
       </main>
-    </>
   );
 }
