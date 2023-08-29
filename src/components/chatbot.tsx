@@ -25,7 +25,6 @@ function Chatbot({ initialMessage }: { initialMessage?: string }) {
     navigator.clipboard.writeText(textToCopy);
   };
 
-
   useEffect(() => {
     if (chatRef.current) {
       chatRef.current.scrollTop = chatRef.current.scrollHeight;
@@ -73,14 +72,21 @@ function Chatbot({ initialMessage }: { initialMessage?: string }) {
             >
               <p className="w-11/12">{message.text}</p>
               {message.sender === "Coach" && (
-                  <span
-                    className="absolute mt-10 mr-2 top-0 right-0 cursor-pointer"
-                    onClick={(e) => copyToClipboard(e.currentTarget.parentElement! as HTMLDivElement)}
-                  >
-                    <img className="hover:drop-shadow " src="/resources/clipboardicon.png" alt="Copy to Clipboard"></img>
-                  </span>
-                )}
-
+                <span
+                  className="absolute mt-10 mr-2 top-0 right-0 cursor-pointer"
+                  onClick={(e) =>
+                    copyToClipboard(
+                      e.currentTarget.parentElement! as HTMLDivElement
+                    )
+                  }
+                >
+                  <img
+                    className="hover:drop-shadow "
+                    src="/resources/clipboardicon.png"
+                    alt="Copy to Clipboard"
+                  ></img>
+                </span>
+              )}
             </div>
           </div>
         ))}

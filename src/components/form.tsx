@@ -62,6 +62,7 @@ function formatWorkoutMessage(workoutJson: string): JSX.Element[] {
 function WorkoutForm({ onFormSubmit }: WorkoutFormProps) {
   const [showChatbot, setShowChatbot] = useState(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const [isValid, setIsValid] = useState(true);
   const [firstChatbotMessage, setFirstChatbotMessage] = useState<
     string | JSX.Element[] | null
   >(null);
@@ -89,14 +90,32 @@ function WorkoutForm({ onFormSubmit }: WorkoutFormProps) {
     );
   };
 
-  const handleChange = (e: { target: { name: any; value: any } }) => {
+  const handleChange = (e: { target: { name: string; value: string } }) => {
     const { name, value } = e.target;
+
+    // Special condition for 'laggingMuscles' input
+    if (name === "laggingMuscles") {
+      const hasNumbers = /\d/.test(value);
+      if (hasNumbers) {
+        setIsValid(false);
+        return; // Stop updating the state for this field if it's invalid
+      } else {
+        setIsValid(true);
+      }
+    }
+
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true); // Set loading state to true here
+
+    if (!isValid) {
+      alert("Please enter only letters in the 'laggingMuscles' field.");
+      return;
+    }
+
+    setLoading(true);
 
     try {
       const response = await fetch("/api/generateWorkout", {
@@ -187,6 +206,11 @@ function WorkoutForm({ onFormSubmit }: WorkoutFormProps) {
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             />
           </div>
+          {!isValid && (
+            <p className=" mb-2 text-red-500">
+              Please enter only what is requested.
+            </p>
+          )}
           <div className="mb-4">
             <label
               className="block text-gray-700 text-sm font-bold mb-2"

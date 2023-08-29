@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 
 function Loadinganimation() {
-  const [loadingText, setLoadingText] = useState("Analysing your preferences and goals...");
+  const [loadingText, setLoadingText] = useState(
+    "Analysing your preferences and goals..."
+  );
   const loadingOptions = [
     "Picking optimal exercises...",
     "Generating your workout plan...",
-    "Getting ready..."
+    "Assigning sets and reps per exercise...",
+    "Doing the final touches...",
   ];
 
   useEffect(() => {
