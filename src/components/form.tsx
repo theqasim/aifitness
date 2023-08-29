@@ -176,14 +176,14 @@ function WorkoutForm({ onFormSubmit }: WorkoutFormProps) {
               className="block text-gray-700 text-sm font-bold mb-2"
               htmlFor="laggingMuscles"
             >
-              Lagging Muscle Groups:
+              Targetted Muscle Groups:
             </label>
             <input
               id="laggingMuscles"
               type="text"
               name="laggingMuscles"
               onChange={handleChange}
-              placeholder="e.g., biceps, calves"
+              placeholder="e.g. biceps, calves"
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             />
           </div>
