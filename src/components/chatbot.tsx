@@ -81,7 +81,7 @@ function Chatbot({ initialMessage }: { initialMessage?: string }) {
                   }
                 >
                   <img
-                    className="hover:drop-shadow "
+                    className="hover:drop-shadow rounded-md outline-none focus:ring-4 shadow-lg transform active:scale-75 transition-transform"
                     src="/resources/clipboardicon.png"
                     alt="Copy to Clipboard"
                   ></img>
