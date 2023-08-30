@@ -18,13 +18,13 @@ interface Day {
 
 function formatWorkoutMessage(workoutJson: string): JSX.Element[] {
   const workoutData = JSON.parse(workoutJson);
-  console.log("Workout Data: ", workoutData); // Debugging line
+  //console.log("Workout Data: ", workoutData); // Debugging line
 
   const formattedMessage: JSX.Element[] = [];
 
   // Check if the keys exist in the parsed JSON
   const keys = Object.keys(workoutData);
-  console.log("Keys: ", keys); // Debugging line
+  //console.log("Keys: ", keys); // Debugging line
 
   keys.forEach((workoutDayKey) => {
     const workoutDay: Day = workoutData[workoutDayKey];
@@ -128,15 +128,31 @@ function WorkoutForm({ onFormSubmit }: WorkoutFormProps) {
 
       const responseData = await response.json();
 
+      const convoDataStructure = [
+        {
+          role: "system",
+          content:
+            "You are an expert in fitness. Based on user inputs, please provide daily workouts consisting of exercises and reps in JSON format...",
+        },
+        {
+          role: "user",
+          content: JSON.stringify(formData, null, 2),
+        },
+      ];
+
       const fetchedMessage = responseData.choices[0].message.content;
       const formattedMessage = formatWorkoutMessage(fetchedMessage);
 
       if (formattedMessage) {
+        convoDataStructure.push({
+          role: "assistant",
+          content: fetchedMessage,
+        });
+        console.log(convoDataStructure);
+
         setFirstChatbotMessage(formattedMessage);
-        onFormSubmit(formattedMessage); // Pass the formatted message up
+        onFormSubmit(formattedMessage);
       } else {
-        // Handle the case where formattedMessage is null.
-        // Maybe set an error state or call onFormSubmit with a default value.
         onFormSubmit("No formatted message available.");
       }
 
