@@ -4,6 +4,7 @@ import Chatbot from "./chatbot";
 
 interface WorkoutFormProps {
   onFormSubmit: (message: string | JSX.Element[]) => void;
+  onConvoDataChange: (data: any[]) => void;
 }
 
 interface Exercise {
@@ -15,6 +16,8 @@ interface Day {
   day: string;
   exercises: Exercise[];
 }
+
+
 
 function formatWorkoutMessage(workoutJson: string): JSX.Element[] {
   const workoutData = JSON.parse(workoutJson);
@@ -59,7 +62,8 @@ function formatWorkoutMessage(workoutJson: string): JSX.Element[] {
   return formattedMessage;
 }
 
-function WorkoutForm({ onFormSubmit }: WorkoutFormProps) {
+function WorkoutForm(props: WorkoutFormProps) {
+  const { onFormSubmit, onConvoDataChange } = props;
   const [showChatbot, setShowChatbot] = useState(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [isValid, setIsValid] = useState(true);
@@ -74,8 +78,10 @@ function WorkoutForm({ onFormSubmit }: WorkoutFormProps) {
     fitnessGoals: "strength",
     laggingMuscles: "",
     workoutDays: "",
-    weightgoal: "weightgoal",
+    weightgoal: "Bulk Up",
   });
+
+//console.log(props);
 
   const isFormValid = (): boolean => {
     const { gender, fitnessGoals, laggingMuscles, workoutDays, weightgoal } =
@@ -110,6 +116,7 @@ function WorkoutForm({ onFormSubmit }: WorkoutFormProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+
     if (!isValid) {
       alert("Please enter only letters in the 'laggingMuscles' field.");
       return;
@@ -128,6 +135,11 @@ function WorkoutForm({ onFormSubmit }: WorkoutFormProps) {
 
       const responseData = await response.json();
 
+
+      const formattedData = `Gender: ${formData.gender}, Fitness Goals: ${formData.fitnessGoals}, Lagging Muscles: ${formData.laggingMuscles}, Workout Days: ${formData.workoutDays}, Weight Goal: ${formData.weightgoal}`;
+      //console.log(formattedData);
+
+
       const convoDataStructure = [
         {
           role: "system",
@@ -136,27 +148,35 @@ function WorkoutForm({ onFormSubmit }: WorkoutFormProps) {
         },
         {
           role: "user",
-          content: JSON.stringify(formData, null, 2),
+          content: formattedData,
         },
       ];
 
       const fetchedMessage = responseData.choices[0].message.content;
       const formattedMessage = formatWorkoutMessage(fetchedMessage);
 
+
       if (formattedMessage) {
         convoDataStructure.push({
           role: "assistant",
           content: fetchedMessage,
         });
-        console.log(convoDataStructure);
+
+
+
+        // console.log(convoDataStructure);
+
+        //console.log(typeof onConvoDataChange); // should output 'function'
 
         setFirstChatbotMessage(formattedMessage);
         onFormSubmit(formattedMessage);
+
       } else {
         onFormSubmit("No formatted message available.");
       }
 
       setShowChatbot(true); // This will show the chatbot component when form is submitted
+      onConvoDataChange(convoDataStructure);
     } catch (error) {
       console.error("Error fetching data:", error);
       alert(
@@ -168,8 +188,8 @@ function WorkoutForm({ onFormSubmit }: WorkoutFormProps) {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center w-full lg:w-2/4 shadow-lg p-5 bg-white rounded-md font-mons">
-      <div className="flex items-center justify-center w-4/4 mt-10">
+    <div className="flex flex-col items-center justify-center mt-16 w-full lg:w-3/4 shadow-lg p-5 bg-white rounded-md font-mons">
+    <div className="flex items-center justify-center w-4/4">
         <form onSubmit={handleSubmit} className="w-full max-w-md">
           <div className="mb-4">
             <label
