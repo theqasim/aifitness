@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { formatWorkoutMessage } from "@/app/lib/formatWorkoutMessage";
 
 function Chatbot({
   initialMessage,
@@ -12,6 +13,7 @@ function Chatbot({
     null
   );
   const [localConvoData, setLocalConvoData] = useState<any[]>(convoData);
+  const [isCoachTyping, setIsCoachTyping] = useState(false);
 
   const defaultMessages = [
     {
@@ -38,9 +40,12 @@ function Chatbot({
 
   useEffect(() => {
     if (chatRef.current) {
-      chatRef.current.scrollTop = chatRef.current.scrollHeight;
+      // Use a timeout to ensure the DOM has updated before setting the scroll position
+      setTimeout(() => {
+        chatRef.current!.scrollTop = chatRef.current!.scrollHeight;
+      }, 0);
     }
-  }, [messages]);
+  }, [messages, isCoachTyping]);
 
   const handleInputChange = (e: {
     target: { value: React.SetStateAction<string> };
@@ -70,6 +75,7 @@ function Chatbot({
 
       // Make the POST request to /api/aiCoach
       const fetchData = async () => {
+        setIsCoachTyping(true);
         try {
           const response = await fetch("/api/aiCoach", {
             method: "POST",
@@ -88,6 +94,15 @@ function Chatbot({
           // Extract the coach's message from the response
           const coachMessage = responseData.choices[0].message.content;
 
+          let formattedCoachMessage;
+          try {
+            JSON.parse(coachMessage);
+            formattedCoachMessage = formatWorkoutMessage(coachMessage);
+          } catch (e) {
+            // If parsing fails, it's not a JSON-formatted workout plan
+            formattedCoachMessage = coachMessage;
+          }
+
           // Add the coach's message to the local conversation data and messages state
           const newConvoData = [
             ...localConvoData,
@@ -98,10 +113,14 @@ function Chatbot({
           ];
           setLocalConvoData(newConvoData);
 
-          setMessages([...messages, { sender: "Coach", text: coachMessage }]);
+          setMessages([
+            ...messages,
+            { sender: "Coach", text: formattedCoachMessage },
+          ]);
         } catch (error) {
           console.error("Error fetching data:", error);
         }
+        setIsCoachTyping(false);
       };
 
       fetchData();
@@ -154,6 +173,19 @@ function Chatbot({
             </div>
           </div>
         ))}
+        {isCoachTyping && (
+          <div className="mb-4">
+            <div className="text-green-600 mb-2">Coach</div>
+            <div className="bg-green-100 p-2 rounded-md">
+              <p>
+                Coach is typing
+                <span className="dot"></span>
+                <span className="dot"></span>
+                <span className="dot"></span>
+              </p>
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="p-4 border-t flex items-center">
@@ -162,8 +194,12 @@ function Chatbot({
           value={inputValue}
           onChange={handleInputChange}
           placeholder="Type your message..."
-          className="flex-grow p-2 rounded-md border focus:outline-none focus:border-blue-500 resize-y"
+          className={`flex-grow p-2 rounded-md border focus:outline-none focus:border-blue-500 resize-y ${
+            isCoachTyping ? "bg-gray-300 cursor-not-allowed" : ""
+          }`}
+          disabled={isCoachTyping} // Disable the textarea when the coach is typing
         ></textarea>
+
         <button
           onClick={handleSendClick}
           className="ml-4 bg-black text-white p-2 rounded-md"
