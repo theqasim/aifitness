@@ -1,10 +1,17 @@
 import React, { useEffect, useRef, useState } from "react";
 
-function Chatbot({ initialMessage, convoData }: { initialMessage?: string, convoData: any[] }) {
+function Chatbot({
+  initialMessage,
+  convoData,
+}: {
+  initialMessage?: string;
+  convoData: any[];
+}) {
   const chatRef = useRef<HTMLDivElement>(null);
-  const [latestUserMessage, setLatestUserMessage] = useState<string | null>(null);
+  const [latestUserMessage, setLatestUserMessage] = useState<string | null>(
+    null
+  );
   const [localConvoData, setLocalConvoData] = useState<any[]>(convoData);
-
 
   const defaultMessages = [
     {
@@ -45,27 +52,29 @@ function Chatbot({ initialMessage, convoData }: { initialMessage?: string, convo
     if (inputValue.trim()) {
       setMessages([...messages, { sender: "You", text: inputValue.trim() }]);
       setInputValue("");
-      setLatestUserMessage(inputValue.trim());  // Store the latest user message
-
+      setLatestUserMessage(inputValue.trim()); // Store the latest user message
     }
   };
 
   useEffect(() => {
     if (latestUserMessage !== null) {
-      const updatedConvoData = [...localConvoData, {
-        role: "user",
-        content: latestUserMessage,
-      }];
+      const updatedConvoData = [
+        ...localConvoData,
+        {
+          role: "user",
+          content: latestUserMessage,
+        },
+      ];
       setLocalConvoData(updatedConvoData);
       console.log("After update:", updatedConvoData);
 
       // Make the POST request to /api/aiCoach
       const fetchData = async () => {
         try {
-          const response = await fetch('/api/aiCoach', {
-            method: 'POST',
+          const response = await fetch("/api/aiCoach", {
+            method: "POST",
             headers: {
-              'Content-Type': 'application/json',
+              "Content-Type": "application/json",
             },
             body: JSON.stringify({ convoBody: updatedConvoData }),
           });
@@ -80,23 +89,24 @@ function Chatbot({ initialMessage, convoData }: { initialMessage?: string, convo
           const coachMessage = responseData.choices[0].message.content;
 
           // Add the coach's message to the local conversation data and messages state
-          const newConvoData = [...localConvoData, {
-            role: 'assistant',
-            content: JSON.stringify(coachMessage),
-          }];
+          const newConvoData = [
+            ...localConvoData,
+            {
+              role: "assistant",
+              content: JSON.stringify(coachMessage),
+            },
+          ];
           setLocalConvoData(newConvoData);
 
-          setMessages([...messages, { sender: 'Coach', text: coachMessage }]);
+          setMessages([...messages, { sender: "Coach", text: coachMessage }]);
         } catch (error) {
-          console.error('Error fetching data:', error);
+          console.error("Error fetching data:", error);
         }
       };
 
       fetchData();
     }
   }, [latestUserMessage]);
-
-
 
   return (
     <div className="mt-10 w-full lg:w-3/4 bg-white rounded-md shadow-lg font-mons">
