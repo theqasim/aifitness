@@ -12,13 +12,10 @@ interface Day {
 
 export function formatWorkoutMessage(workoutJson: string): JSX.Element[] {
   const workoutData = JSON.parse(workoutJson);
-  //console.log("Workout Data: ", workoutData); // Debugging line
 
   const formattedMessage: JSX.Element[] = [];
 
-  // Check if the keys exist in the parsed JSON
   const keys = Object.keys(workoutData);
-  //console.log("Keys: ", keys); // Debugging line
 
   keys.forEach((workoutDayKey) => {
     const workoutDay: Day = workoutData[workoutDayKey];
@@ -26,7 +23,6 @@ export function formatWorkoutMessage(workoutJson: string): JSX.Element[] {
     const exercises: Exercise[] = workoutDay.exercises;
 
     if (exercises) {
-      // Check if exercises array exists
       const formattedExercises: string = exercises
         .map((exercise: Exercise) => {
           return `${exercise.name} - ${exercise.reps}`;

@@ -6,23 +6,20 @@ async function POST(req: NextRequest) {
     return new NextResponse("Method not allowed", { status: 405 });
   }
 
-  // Manually parsing the body
   const body = await req.text();
   const parsedBody = JSON.parse(body);
 
-  // Extract the convoBody structure from the parsed body
   const { convoBody } = parsedBody;
 
   if (!convoBody) {
     return new NextResponse("Missing convoBody in request", { status: 400 });
   }
 
-  // Prepare the data for the API request
   const data = {
     model: "gpt-3.5-turbo",
     messages: convoBody,
     temperature: 1,
-    max_tokens: 1750,
+    max_tokens: 2750,
     top_p: 1,
     frequency_penalty: 0,
     presence_penalty: 0,

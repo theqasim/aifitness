@@ -6,7 +6,6 @@ async function POST(req: NextRequest) {
     return new NextResponse("Method not allowed", { status: 405 });
   }
 
-  // Manually parsing the body
   const body = await req.text();
   const parsedBody = JSON.parse(body);
 
@@ -29,7 +28,7 @@ async function POST(req: NextRequest) {
       },
     ],
     temperature: 1,
-    max_tokens: 1750,
+    max_tokens: 2750,
     top_p: 1,
     frequency_penalty: 0,
     presence_penalty: 0,

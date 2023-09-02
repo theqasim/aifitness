@@ -33,14 +33,12 @@ function Chatbot({
   const [inputValue, setInputValue] = useState("");
 
   const copyToClipboard = (element: HTMLDivElement) => {
-    const textToCopy = element.innerText; // Gets all text within the div
+    const textToCopy = element.innerText;
     navigator.clipboard.writeText(textToCopy);
-    //console.log(convoData);
   };
 
   useEffect(() => {
     if (chatRef.current) {
-      // Use a timeout to ensure the DOM has updated before setting the scroll position
       setTimeout(() => {
         chatRef.current!.scrollTop = chatRef.current!.scrollHeight;
       }, 0);
@@ -57,7 +55,7 @@ function Chatbot({
     if (inputValue.trim()) {
       setMessages([...messages, { sender: "You", text: inputValue.trim() }]);
       setInputValue("");
-      setLatestUserMessage(inputValue.trim()); // Store the latest user message
+      setLatestUserMessage(inputValue.trim());
     }
   };
 
@@ -71,9 +69,7 @@ function Chatbot({
         },
       ];
       setLocalConvoData(updatedConvoData);
-      console.log("After update:", updatedConvoData);
 
-      // Make the POST request to /api/aiCoach
       const fetchData = async () => {
         setIsCoachTyping(true);
         try {
@@ -91,7 +87,6 @@ function Chatbot({
 
           const responseData = await response.json();
 
-          // Extract the coach's message from the response
           const coachMessage = responseData.choices[0].message.content;
 
           let formattedCoachMessage;
@@ -99,11 +94,9 @@ function Chatbot({
             JSON.parse(coachMessage);
             formattedCoachMessage = formatWorkoutMessage(coachMessage);
           } catch (e) {
-            // If parsing fails, it's not a JSON-formatted workout plan
             formattedCoachMessage = coachMessage;
           }
 
-          // Add the coach's message to the local conversation data and messages state
           const newConvoData = [
             ...localConvoData,
             {
@@ -130,7 +123,9 @@ function Chatbot({
   return (
     <div className="mt-10 w-full lg:w-3/4 bg-white rounded-md shadow-lg font-mons">
       <div className="p-4 border-b">
-        <h2 className="text-xl font-bold">FitnessAI Coach</h2>
+        <h2 className="text-xl font-bold black-underline-effect">
+          FitnessAI Coach
+        </h2>
       </div>
 
       <div ref={chatRef} className="p-4 h-96 overflow-y-auto">

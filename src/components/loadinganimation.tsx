@@ -18,11 +18,11 @@ function Loadinganimation() {
       if (index < loadingOptions.length) {
         setLoadingText(loadingOptions[index]);
       } else {
-        clearInterval(interval); // Stop the interval once the final message is displayed
+        clearInterval(interval);
       }
     }, 6000);
 
-    return () => clearInterval(interval); // Clear the interval if the component is unmounted
+    return () => clearInterval(interval);
   }, []);
 
   return (

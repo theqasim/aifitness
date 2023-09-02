@@ -1,19 +1,11 @@
-// Home.tsx
 "use client";
-
 import Image from "next/image";
 import TopSection from "@/components/topsection";
-import WorkoutForm from "@/components/form";
 import { useState } from "react";
-import Chatbot from "../components/chatbot";
 import WorkoutWithChatbot from "@/components/workoutwithchatbot";
 
 export default function Home() {
   const [chatbotMessage, setChatbotMessage] = useState<string | null>(null);
-
-  const handleFormSubmission = (message: string) => {
-    setChatbotMessage(message);
-  };
 
   return (
     <main className="flex flex-col items-center justify-center min-h-screen p-24 bg-bggrey">

@@ -3,7 +3,6 @@ import WorkoutForm from "./form";
 import Chatbot from "./chatbot";
 
 function WorkoutWithChatbot() {
-  console.log("Parent component rendering");
   const [chatbotMessage, setChatbotMessage] = React.useState<string | null>(
     null
   );

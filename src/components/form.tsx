@@ -1,6 +1,5 @@
 import { useState } from "react";
 import Loadinganimation from "./loadinganimation";
-import Chatbot from "./chatbot";
 import { formatWorkoutMessage } from "@/app/lib/formatWorkoutMessage";
 
 interface WorkoutFormProps {
@@ -27,8 +26,6 @@ function WorkoutForm(props: WorkoutFormProps) {
     weightgoal: "Bulk Up",
   });
 
-  //console.log(props);
-
   const isFormValid = (): boolean => {
     const { gender, fitnessGoals, laggingMuscles, workoutDays, weightgoal } =
       formData;
@@ -45,12 +42,11 @@ function WorkoutForm(props: WorkoutFormProps) {
   const handleChange = (e: { target: { name: string; value: string } }) => {
     const { name, value } = e.target;
 
-    // Special condition for 'laggingMuscles' input
     if (name === "laggingMuscles") {
       const hasNumbers = /\d/.test(value);
       if (hasNumbers) {
         setIsValid(false);
-        return; // Stop updating the state for this field if it's invalid
+        return;
       } else {
         setIsValid(true);
       }
@@ -81,8 +77,6 @@ function WorkoutForm(props: WorkoutFormProps) {
       const responseData = await response.json();
 
       const formattedData = `Gender: ${formData.gender}, Fitness Goals: ${formData.fitnessGoals}, Lagging Muscles: ${formData.laggingMuscles}, Workout Days: ${formData.workoutDays}, Weight Goal: ${formData.weightgoal}`;
-      //console.log(formattedData);
-
       const convoDataStructure = [
         {
           role: "system",
@@ -104,17 +98,13 @@ function WorkoutForm(props: WorkoutFormProps) {
           content: fetchedMessage,
         });
 
-        // console.log(convoDataStructure);
-
-        //console.log(typeof onConvoDataChange); // should output 'function'
-
         setFirstChatbotMessage(formattedMessage);
         onFormSubmit(formattedMessage);
       } else {
         onFormSubmit("No formatted message available.");
       }
 
-      setShowChatbot(true); // This will show the chatbot component when form is submitted
+      setShowChatbot(true);
       onConvoDataChange(convoDataStructure);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -122,7 +112,7 @@ function WorkoutForm(props: WorkoutFormProps) {
         "There was an error generating your workout plan. Please try again."
       );
     } finally {
-      setLoading(false); // Set loading state to false regardless of success or error
+      setLoading(false);
     }
   };
 
