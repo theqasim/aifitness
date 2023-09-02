@@ -135,21 +135,42 @@ function Chatbot({
 
       <div ref={chatRef} className="p-4 h-96 overflow-y-auto">
         {messages.map((message, index) => (
-          <div key={index} className={`mb-4 flex ${message.sender === "You" ? "justify-end" : ""}`}>
+          <div
+            key={index}
+            className={`mb-4 flex ${
+              message.sender === "You" ? "justify-end" : ""
+            }`}
+          >
             {message.sender === "Coach" && (
-              <img src="/resources/coach-image.png" alt="Coach profile" className="h-10 w-10 mr-2 rounded-full" />
+              <img
+                src="/resources/coach-image.png"
+                alt="Coach profile"
+                className="h-10 w-10 mr-2 rounded-full"
+              />
             )}
-            <div className={`p-2 rounded-md ${message.sender === "You" ? "bg-blue-100" : "bg-green-100"}`}>
+            <div
+              className={`p-2 rounded-md ${
+                message.sender === "You" ? "bg-blue-100" : "bg-green-100"
+              }`}
+            >
               <p>{message.text}</p>
             </div>
             {message.sender === "You" && (
-              <img src="/resources/generic-image.png" alt="Your profile" className="ml-2 h-10 w-10 rounded-full" />
+              <img
+                src="/resources/generic-image.png"
+                alt="Your profile"
+                className="ml-2 h-10 w-10 rounded-full"
+              />
             )}
           </div>
         ))}
         {isCoachTyping && (
           <div className="mb-4 flex justify-start">
-            <img src="/resources/coach-image.png" alt="Coach profile" className="h-10 w-10 rounded-full" />
+            <img
+              src="/resources/coach-image.png"
+              alt="Coach profile"
+              className="h-10 w-10 rounded-full"
+            />
             <div className="ml-2 p-2 bg-green-100 rounded-md">
               <p>
                 Coach is typing
@@ -168,14 +189,30 @@ function Chatbot({
           value={inputValue}
           onChange={handleInputChange}
           placeholder="Type your message..."
-          className={`flex-grow p-2 rounded-md border focus:outline-none focus:border-blue-500 resize-y ${isCoachTyping ? "bg-gray-300 cursor-not-allowed" : ""}`}
+          className={`flex-grow p-2 rounded-md border resize-none focus:outline-none focus:border-blue-500  ${
+            isCoachTyping ? "bg-gray-300 cursor-not-allowed" : ""
+          }`}
           disabled={isCoachTyping}
         ></textarea>
-        <button
+        {/* <button
           onClick={handleSendClick}
           className="ml-4 bg-black text-white p-2 rounded-md"
         >
           Send
+        </button> */}
+        <button
+          className="relative inline-block text-sm group ml-2"
+          onClick={handleSendClick}
+        >
+          <span className="relative z-10 block px-5 py-3 overflow-hidden font-medium leading-tight text-gray-800 transition-colors duration-300 ease-out border-2 border-gray-900 rounded-lg group-hover:text-white">
+            <span className="absolute inset-0 w-full h-full px-5 py-3 rounded-lg bg-gray-50"></span>
+            <span className="absolute left-0 w-48 h-48 -ml-2 transition-all duration-300 origin-top-right -rotate-90 -translate-x-full translate-y-12 bg-gray-900 group-hover:-rotate-180 ease"></span>
+            <span className="relative">Send</span>
+          </span>
+          <span
+            className="absolute bottom-0 right-0 w-full h-12 -mb-1 -mr-1 transition-all duration-200 ease-linear bg-gray-900 rounded-lg group-hover:mb-0 group-hover:mr-0"
+            data-rounded="rounded-lg"
+          ></span>
         </button>
       </div>
     </div>
