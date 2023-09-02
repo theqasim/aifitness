@@ -18,8 +18,8 @@ export default function Home() {
   return (
     <main className="flex flex-col items-center justify-center min-h-screen p-24 bg-bggrey">
       <TopSection />
-      <div className="grid grid-rows-[auto,1fr] gap-6 w-full">
-        <div className="flex flex-col lg:flex-row items-start w-full space-y-6 lg:space-y-0 lg:space-x-6">
+      <div className="grid grid-rows-[auto,1fr] gap-6 w-full ">
+        <div className="flex flex-col  lg:flex-row items-start w-full space-y-6 lg:space-y-0 lg:space-x-6">
           <Image
             src="/resources/avatar5.png"
             alt="Description of the image"

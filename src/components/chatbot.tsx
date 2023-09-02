@@ -135,48 +135,22 @@ function Chatbot({
 
       <div ref={chatRef} className="p-4 h-96 overflow-y-auto">
         {messages.map((message, index) => (
-          <div key={index} className="mb-4 relative">
-            <div
-              className={
-                message.sender === "You"
-                  ? "text-blue-600 mb-2"
-                  : "text-green-600 mb-2"
-              }
-            >
-              {message.sender}
+          <div key={index} className={`mb-4 flex ${message.sender === "You" ? "justify-end" : ""}`}>
+            {message.sender === "Coach" && (
+              <img src="/resources/coach-image.png" alt="Coach profile" className="h-10 w-10 mr-2 rounded-full" />
+            )}
+            <div className={`p-2 rounded-md ${message.sender === "You" ? "bg-blue-100" : "bg-green-100"}`}>
+              <p>{message.text}</p>
             </div>
-            <div
-              className={
-                message.sender === "You"
-                  ? "bg-blue-100 p-2 rounded-md"
-                  : "bg-green-100 p-2 rounded-md"
-              }
-              data-clipboard-text={message.text}
-            >
-              <p className="w-11/12">{message.text}</p>
-              {message.sender === "Coach" && (
-                <span
-                  className="absolute mt-10 mr-2 top-0 right-0 cursor-pointer"
-                  onClick={(e) =>
-                    copyToClipboard(
-                      e.currentTarget.parentElement! as HTMLDivElement
-                    )
-                  }
-                >
-                  <img
-                    className="hover:drop-shadow rounded-md outline-none focus:ring-4 shadow-lg transform active:scale-75 transition-transform"
-                    src="/resources/clipboardicon.png"
-                    alt="Copy to Clipboard"
-                  ></img>
-                </span>
-              )}
-            </div>
+            {message.sender === "You" && (
+              <img src="/resources/generic-image.png" alt="Your profile" className="ml-2 h-10 w-10 rounded-full" />
+            )}
           </div>
         ))}
         {isCoachTyping && (
-          <div className="mb-4">
-            <div className="text-green-600 mb-2">Coach</div>
-            <div className="bg-green-100 p-2 rounded-md">
+          <div className="mb-4 flex justify-start">
+            <img src="/resources/coach-image.png" alt="Coach profile" className="h-10 w-10 rounded-full" />
+            <div className="ml-2 p-2 bg-green-100 rounded-md">
               <p>
                 Coach is typing
                 <span className="dot"></span>
@@ -194,12 +168,9 @@ function Chatbot({
           value={inputValue}
           onChange={handleInputChange}
           placeholder="Type your message..."
-          className={`flex-grow p-2 rounded-md border focus:outline-none focus:border-blue-500 resize-y ${
-            isCoachTyping ? "bg-gray-300 cursor-not-allowed" : ""
-          }`}
-          disabled={isCoachTyping} // Disable the textarea when the coach is typing
+          className={`flex-grow p-2 rounded-md border focus:outline-none focus:border-blue-500 resize-y ${isCoachTyping ? "bg-gray-300 cursor-not-allowed" : ""}`}
+          disabled={isCoachTyping}
         ></textarea>
-
         <button
           onClick={handleSendClick}
           className="ml-4 bg-black text-white p-2 rounded-md"
