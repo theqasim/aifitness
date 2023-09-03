@@ -59,7 +59,7 @@ function WorkoutForm(props: WorkoutFormProps) {
     e.preventDefault();
 
     if (!isValid) {
-      alert("Please enter only letters in the 'laggingMuscles' field.");
+      alert("Please enter only letters in the laggingMuscles' field.");
       return;
     }
 
