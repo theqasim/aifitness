@@ -91,8 +91,7 @@ function WorkoutForm(props: WorkoutFormProps) {
 
       const fetchedMessage = responseData.choices[0].message.content;
       const formattedMessage = formatWorkoutMessage(fetchedMessage);
-
-      if (formattedMessage) {
+      if (formattedMessage.length > 0) {
         convoDataStructure.push({
           role: "assistant",
           content: fetchedMessage,

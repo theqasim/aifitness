@@ -3,12 +3,13 @@ import WorkoutForm from "./form";
 import Chatbot from "./chatbot";
 
 function WorkoutWithChatbot() {
-  const [chatbotMessage, setChatbotMessage] = React.useState<string | null>(
-    null
-  );
+  const [chatbotMessage, setChatbotMessage] = React.useState<
+    string | JSX.Element[] | null
+  >(null);
+
   const [convoData, setConvoData] = React.useState<any[]>([]);
 
-  const handleFormSubmit = (message: string) => {
+  const handleFormSubmit = (message: string | JSX.Element[]) => {
     setChatbotMessage(message);
   };
 

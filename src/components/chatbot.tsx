@@ -1,13 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import { formatWorkoutMessage } from "@/app/lib/formatWorkoutMessage";
 
-function Chatbot({
-  initialMessage,
-  convoData,
-}: {
-  initialMessage?: string;
+interface ChatbotProps {
+  initialMessage?: string | JSX.Element[];
   convoData: any[];
-}) {
+}
+
+function Chatbot({ initialMessage, convoData }: ChatbotProps) {
   const chatRef = useRef<HTMLDivElement>(null);
   const [latestUserMessage, setLatestUserMessage] = useState<string | null>(
     null
@@ -15,10 +14,15 @@ function Chatbot({
   const [localConvoData, setLocalConvoData] = useState<any[]>(convoData);
   const [isCoachTyping, setIsCoachTyping] = useState(false);
 
-  const defaultMessages = [
+  type Message = {
+    sender: string;
+    text: string | JSX.Element[];
+  };
+
+  const defaultMessages: Message[] = [
     {
       sender: "Coach",
-      text: "Hello! Here is your personalized workout plan, let me know if you have any questions! ",
+      text: "Hello! Here is your personalized workout plan, let me know if you have any questions!",
     },
   ];
 
@@ -148,7 +152,11 @@ function Chatbot({
                 message.sender === "You" ? "bg-blue-100" : "bg-green-100"
               }`}
             >
-              <p>{message.text}</p>
+              {typeof message.text === "string" ? (
+                <p>{message.text}</p>
+              ) : (
+                message.text
+              )}
             </div>
             {message.sender === "You" && (
               <img
@@ -159,6 +167,7 @@ function Chatbot({
             )}
           </div>
         ))}
+
         {isCoachTyping && (
           <div className="mb-4 flex justify-start">
             <img
