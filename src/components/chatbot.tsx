@@ -153,7 +153,7 @@ function Chatbot({ initialMessage, convoData }: ChatbotProps) {
               }`}
             >
               {typeof message.text === "string" ? (
-                <p className="w-11/12">{message.text}</p>
+                <p className="w-4/5">{message.text}</p>
               ) : (
                 message.text
               )}
@@ -214,25 +214,32 @@ function Chatbot({ initialMessage, convoData }: ChatbotProps) {
           }`}
           disabled={isCoachTyping}
         ></textarea>
-        {/* <button
-          onClick={handleSendClick}
-          className="ml-4 bg-black text-white p-2 rounded-md"
-        >
-          Send
-        </button> */}
-        <button
-          className="relative inline-block text-sm group ml-2"
-          onClick={handleSendClick}
-        >
-          <span className="relative z-10 block px-5 py-3 overflow-hidden font-medium leading-tight text-gray-800 transition-colors duration-300 ease-out border-2 border-gray-900 rounded-lg group-hover:text-white">
-            <span className="absolute inset-0 w-full h-full px-5 py-3 rounded-lg bg-gray-50"></span>
-            <span className="absolute left-0 w-48 h-48 -ml-2 transition-all duration-300 origin-top-right -rotate-90 -translate-x-full translate-y-12 bg-gray-900 group-hover:-rotate-180 ease"></span>
-            <span className="relative">Send</span>
-          </span>
-          <span
-            className="absolute bottom-0 right-0 w-full h-12 -mb-1 -mr-1 transition-all duration-200 ease-linear bg-gray-900 rounded-lg group-hover:mb-0 group-hover:mr-0"
-            data-rounded="rounded-lg"
-          ></span>
+
+        <button onClick={handleSendClick}>
+          <a
+            href="#_"
+            className="box-border relative z-30 inline-flex items-center justify-center w-auto px-4 ml-2 py-3 overflow-hidden font-bold text-white transition-all duration-300 bg-black rounded-md cursor-pointer group  ring-black ease focus:outline-none"
+          >
+            <span className="absolute bottom-0 right-0 w-8 h-20 -mb-8 -mr-5 transition-all duration-300 ease-out transform rotate-45 translate-x-1 bg-white opacity-10 group-hover:translate-x-0"></span>
+            <span className="absolute top-0 left-0 w-20 h-8 -mt-1 -ml-12 transition-all duration-300 ease-out transform -rotate-45 -translate-x-1 bg-white opacity-10 group-hover:translate-x-0"></span>
+            <span className="relative z-20 flex items-center text-sm">
+              <svg
+                className="relative w-5 h-5 mr-2 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M13 10V3L4 14h7v7l9-11h-7z"
+                ></path>
+              </svg>
+              Send
+            </span>
+          </a>
         </button>
       </div>
     </div>
