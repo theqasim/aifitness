@@ -148,14 +148,30 @@ function Chatbot({ initialMessage, convoData }: ChatbotProps) {
               />
             )}
             <div
-              className={`p-2 rounded-md ${
+              className={`relative p-2 rounded-md ${
                 message.sender === "You" ? "bg-blue-100" : "bg-green-100"
               }`}
             >
               {typeof message.text === "string" ? (
-                <p>{message.text}</p>
+                <p className="w-11/12">{message.text}</p>
               ) : (
                 message.text
+              )}
+              {message.sender === "Coach" && (
+                <span
+                  className="absolute top-0 right-0 cursor-pointer"
+                  onClick={(e) =>
+                    copyToClipboard(
+                      e.currentTarget.parentElement! as HTMLDivElement
+                    )
+                  }
+                >
+                  <img
+                    className="hover:drop-shadow mr-2 mt-2 rounded-md outline-none focus:ring-4 shadow-lg transform active:scale-75 transition-transform"
+                    src="/resources/clipboardicon.png"
+                    alt="Copy to Clipboard"
+                  />
+                </span>
               )}
             </div>
             {message.sender === "You" && (

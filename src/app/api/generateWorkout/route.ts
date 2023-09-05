@@ -35,8 +35,6 @@ async function POST(req: NextRequest) {
   };
 
   try {
-    console.log(process.env.NEXT_PUBLIC_API_URL)
-    console.log(process.env.SECRET_API_KEY)
     const response = await axios.post(
       `${process.env.NEXT_PUBLIC_API_URL}`,
       data,

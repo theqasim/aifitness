@@ -1,6 +1,6 @@
 function TopSection() {
   return (
-    <div className="mb-10 text-center w-full">
+    <div className="mb-20 text-center w-full">
       <h1 className="text-4xl font-bold mb-4 font-mons text-white">
         Start your fitness journey today!
       </h1>
