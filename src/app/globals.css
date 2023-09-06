@@ -2,59 +2,64 @@
 @tailwind components;
 @tailwind utilities;
 @font-face {
-  font-family: "mons";
-  src: url("../../public/resources/fonts/Montserrat-Bold.ttf");
+    font-family: "mons";
+    src: url("../../public/resources/fonts/Montserrat-Bold.ttf");
 }
 
 @font-face {
-  font-family: "poppins";
-  src: url("../../public/resources/fonts/Poppins-Medium.ttf");
+    font-family: "poppins";
+    src: url("../../public/resources/fonts/Poppins-Medium.ttf");
+}
+
+html,
+body {
+    scroll-behavior: smooth !important;
 }
 
 .underline-effect {
-  background-image: linear-gradient(currentColor, currentColor);
-  background-position: 0% 100%;
-  background-repeat: no-repeat;
-  background-size: 0% 2px;
-  transition: background-size 150ms ease-in;
+    background-image: linear-gradient(currentColor, currentColor);
+    background-position: 0% 100%;
+    background-repeat: no-repeat;
+    background-size: 0% 2px;
+    transition: background-size 150ms ease-in;
 }
 
 .underline-effect:hover {
-  background-size: 100% 2px;
+    background-size: 100% 2px;
 }
 
 .dot {
-  display: inline-block;
-  width: 8px;
-  height: 8px;
-  margin-left: 4px;
-  margin-right: 2px;
-  background-color: #333;
-  border-radius: 50%;
-  opacity: 0;
-  animation: typingDots 1.5s infinite;
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    margin-left: 4px;
+    margin-right: 2px;
+    background-color: #333;
+    border-radius: 50%;
+    opacity: 0;
+    animation: typingDots 1.5s infinite;
 }
 
 .dot:nth-child(1) {
-  animation-delay: 0s;
+    animation-delay: 0s;
 }
 
 .dot:nth-child(2) {
-  animation-delay: 0.5s;
+    animation-delay: 0.5s;
 }
 
 .dot:nth-child(3) {
-  animation-delay: 1s;
+    animation-delay: 1s;
 }
 
 @keyframes typingDots {
-  0% {
-    opacity: 0;
-  }
-  50% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
 }

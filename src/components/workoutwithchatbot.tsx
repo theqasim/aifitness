@@ -1,17 +1,26 @@
-import React from "react";
+import React, { useRef, useEffect, useState } from "react";
 import WorkoutForm from "./form";
 import Chatbot from "./chatbot";
 
 function WorkoutWithChatbot() {
-  const [chatbotMessage, setChatbotMessage] = React.useState<
-    string | JSX.Element[] | null
-  >(null);
-
-  const [convoData, setConvoData] = React.useState<any[]>([]);
+  const chatbotRef = useRef<HTMLDivElement>(null);
+  const [chatbotMessage, setChatbotMessage] = useState<string | JSX.Element[] | null>(null);
+  const [convoData, setConvoData] = useState<any[]>([]);
+  const [showChatbot, setShowChatbot] = useState(false);
 
   const handleFormSubmit = (message: string | JSX.Element[]) => {
     setChatbotMessage(message);
+    setShowChatbot(true);
   };
+
+  useEffect(() => {
+    if (showChatbot && chatbotRef.current) {
+      setTimeout(() => {
+        chatbotRef.current?.scrollIntoView({ behavior: 'smooth' });
+      }, 500);
+    }
+  }, [showChatbot]);
+
 
   return (
     <div className="flex flex-col items-center w-full space-y-6">
@@ -21,7 +30,7 @@ function WorkoutWithChatbot() {
           onConvoDataChange={setConvoData}
         />
       </div>
-      <div className="w-full ">
+      <div ref={chatbotRef} className="w-full ">
         {chatbotMessage && (
           <Chatbot initialMessage={chatbotMessage} convoData={convoData} />
         )}
@@ -29,4 +38,5 @@ function WorkoutWithChatbot() {
     </div>
   );
 }
+
 export default WorkoutWithChatbot;
