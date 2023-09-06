@@ -4,7 +4,9 @@ import Chatbot from "./chatbot";
 
 function WorkoutWithChatbot() {
   const chatbotRef = useRef<HTMLDivElement>(null);
-  const [chatbotMessage, setChatbotMessage] = useState<string | JSX.Element[] | null>(null);
+  const [chatbotMessage, setChatbotMessage] = useState<
+    string | JSX.Element[] | null
+  >(null);
   const [convoData, setConvoData] = useState<any[]>([]);
   const [showChatbot, setShowChatbot] = useState(false);
 
@@ -16,11 +18,10 @@ function WorkoutWithChatbot() {
   useEffect(() => {
     if (showChatbot && chatbotRef.current) {
       setTimeout(() => {
-        chatbotRef.current?.scrollIntoView({ behavior: 'smooth' });
+        chatbotRef.current?.scrollIntoView({ behavior: "smooth" });
       }, 500);
     }
   }, [showChatbot]);
-
 
   return (
     <div className="flex flex-col items-center w-full space-y-6">
