@@ -16,10 +16,10 @@ async function POST(req: NextRequest) {
   }
 
   const data = {
-    model: "gpt-3.5-turbo",
+    model: "gpt-3.5-turbo-16k-0613",
     messages: convoBody,
     temperature: 1,
-    max_tokens: 2750,
+    max_tokens: 14336,
     top_p: 1,
     frequency_penalty: 0,
     presence_penalty: 0,

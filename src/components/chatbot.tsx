@@ -74,7 +74,7 @@ function Chatbot({ initialMessage, convoData }: ChatbotProps) {
       ];
       setLocalConvoData(updatedConvoData);
 
-      const fetchData = async () => {
+      const fetchData = async (retryCount = 3, delay = 1000) => {
         setIsCoachTyping(true);
         try {
           const response = await fetch("/api/aiCoach", {
@@ -86,6 +86,12 @@ function Chatbot({ initialMessage, convoData }: ChatbotProps) {
           });
 
           if (!response.ok) {
+            if (response.status === 500 && retryCount > 0) {
+              setTimeout(() => {
+                fetchData(retryCount - 1, delay * 2); // Retry the request with double the delay
+              }, delay);
+              return;
+            }
             throw new Error(`HTTP error ${response.status}`);
           }
 
