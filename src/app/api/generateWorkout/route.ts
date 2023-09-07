@@ -28,7 +28,7 @@ async function POST(req: NextRequest) {
       },
     ],
     temperature: 1,
-    max_tokens: 2750,
+    max_tokens: 2200,
     top_p: 1,
     frequency_penalty: 0,
     presence_penalty: 0,
