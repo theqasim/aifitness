@@ -138,7 +138,7 @@ function Chatbot({ initialMessage, convoData }: ChatbotProps) {
         </h2>
       </div>
 
-      <div ref={chatRef} className="p-4 h-96 overflow-y-auto">
+      <div ref={chatRef} className="p-4 h-96 overflow-y-auto drop-shadow">
         {messages.map((message, index) => (
           <div
             key={index}
@@ -150,7 +150,7 @@ function Chatbot({ initialMessage, convoData }: ChatbotProps) {
               <img
                 src="/resources/coach-image.png"
                 alt="Coach profile"
-                className="h-10 w-10 mr-2 rounded-full"
+                className="h-10 w-10 mr-2 rounded-full drop-shadow"
               />
             )}
             <div
