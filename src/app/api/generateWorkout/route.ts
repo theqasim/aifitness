@@ -9,10 +9,10 @@ async function POST(req: NextRequest) {
   const body = await req.text();
   const parsedBody = JSON.parse(body);
 
-  const { gender, fitnessGoals, laggingMuscles, workoutDays, weightGoal } =
+  const { gender, fitnessGoals, laggingMuscles, workoutDays, weightGoal, extranotes } =
     parsedBody;
 
-  const userContent = `Gender: ${gender}, Fitness Goals: ${fitnessGoals}, Lagging Muscle Groups: ${laggingMuscles}, Days a week I want to train: ${workoutDays}, Weight Goal: ${weightGoal}`;
+  const userContent = `Gender: ${gender}, Fitness Goals: ${fitnessGoals}, Lagging Muscle Groups: ${laggingMuscles}, Days a week I want to train: ${workoutDays}, Weight Goal: ${weightGoal}, Additional Notes: ${extranotes}`;
 
   const data = {
     model: "gpt-3.5-turbo",

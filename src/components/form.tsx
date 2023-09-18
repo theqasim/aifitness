@@ -26,10 +26,11 @@ function WorkoutForm(props: WorkoutFormProps) {
     targetMuscles: "",
     workoutDays: "",
     weightgoal: "Bulk Up",
+    extranotes: "",
   });
 
   const isFormValid = (): boolean => {
-    const { gender, fitnessGoals, targetMuscles, workoutDays, weightgoal } =
+    const { gender, fitnessGoals, targetMuscles, workoutDays, weightgoal, extranotes } =
       formData;
 
     return (
@@ -37,6 +38,7 @@ function WorkoutForm(props: WorkoutFormProps) {
       !!fitnessGoals &&
       !!targetMuscles &&
       !!workoutDays &&
+      !!extranotes &&
       !!weightgoal
     );
   };
@@ -130,7 +132,7 @@ function WorkoutForm(props: WorkoutFormProps) {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center mt-16 w-full lg:w-3/4 shadow-lg p-5 bg-white rounded-md font-mons">
+    <div className="flex flex-col items-center justify-center md:mt-8 w-full lg:w-3/4 shadow-lg p-5 bg-white rounded-md font-mons">
       <div className="flex items-center justify-center w-4/4">
         <form onSubmit={handleSubmit} className="w-full max-w-md">
           <div className="mb-4">
@@ -236,6 +238,22 @@ function WorkoutForm(props: WorkoutFormProps) {
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             />
           </div>
+          <div className="mb-4">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="targetMuscles"
+            >
+              Is there anything else I should know?
+            </label>
+            <input
+              id="extranotes"
+              type="text"
+              name="extranotes"
+              onChange={handleChange}
+              placeholder="e.g. I only have dumbbells available"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            />
+            </div>
           <div className="flex items-center justify-center">
             {loading && <Loadinganimation />}
             <button
